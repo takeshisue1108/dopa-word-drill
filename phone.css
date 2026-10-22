@@ -1,0 +1,90 @@
+/* The phone version (SPEC 2.0 §2.0.2; ED draft 3 ED-10, D-82, D-85): one column at most 480 px
+   wide on #101422, in Atkinson Hyperlegible and BIZ UDPゴシック. */
+@font-face { font-family: "Atkinson Hyperlegible"; src: url("vendor/fonts/AtkinsonHyperlegible-Regular.ttf"); }
+@font-face { font-family: "BIZ UDPGothic"; src: url("vendor/fonts/BIZUDPGothic-Regular.ttf"); }
+
+:root {
+  --ground: #101422; --text: #e8e6f0; --white: #ffffff; --dim: #8a87a0; --sheet: #1a1f33;
+  --blue: #4aa8ff; --gold: #ffcf3f; --pink: #ff7aa8; --mint: #3fe0a0; --choice: #2a2f66;
+  --en: "Atkinson Hyperlegible", system-ui, sans-serif;
+  --ja: "BIZ UDPGothic", "Atkinson Hyperlegible", system-ui, sans-serif;
+}
+html, body { margin: 0; height: 100%; background: var(--ground); color: var(--text); overflow: hidden; }
+body { font-family: var(--ja); -webkit-text-size-adjust: 100%; }
+button { font: inherit; color: inherit; }
+.hidden-text { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+#app { position: fixed; left: 0; right: 0; top: 0; height: 100%; display: flex; justify-content: center; }
+.page { width: 100%; max-width: 480px; height: 100%; display: flex; flex-direction: column; box-sizing: border-box; }
+.page[hidden] { display: none; }
+
+/* V-08 the book list */
+#books { padding: 16px 16px 24px; overflow-y: auto; }
+#books h1 { font-size: 24px; font-weight: normal; color: var(--white); margin: 8px 0 4px; }
+#loading { font-size: 14px; color: var(--dim); }
+#loading[hidden] { display: none; }
+.message { min-height: 20px; font-size: 14px; color: var(--pink); margin: 4px 0; }
+#list h2 { font-size: 14px; font-weight: normal; color: var(--dim); margin: 16px 0 0; }
+#list ul { list-style: none; margin: 0; padding: 0; }
+#list li { display: flex; align-items: center; gap: 8px; }
+.book { flex: 1 1 auto; display: block; min-height: 56px; text-align: left; background: none; border: 0; padding: 8px 0; cursor: pointer; }
+.book .t { font-family: var(--en); font-size: 20px; color: var(--white); display: block; }
+.book .a { font-size: 14px; color: var(--dim); display: block; margin-top: 2px; }
+.plain { min-height: 44px; background: none; border: 0; padding: 8px 0; color: var(--blue); font-size: 16px; text-align: left; cursor: pointer; }
+.forget { flex: 0 0 auto; min-height: 44px; background: none; border: 0; color: var(--dim); font-size: 13px; cursor: pointer; }
+
+/* V-09 the drill */
+.top { flex: 0 0 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 14px; color: var(--dim); }
+.top button { background: none; border: 0; min-height: 44px; min-width: 44px; color: var(--dim); font-size: 14px; cursor: pointer; }
+#read { position: relative; flex: 1 1 auto; overflow-y: auto; padding: 4px 16px 12px; -webkit-overflow-scrolling: touch; animation: fadein 0.2s; }
+@keyframes fadein { from { opacity: 0; } }
+.chapter { font-size: 14px; color: var(--dim); margin: 0 0 6px; }
+.sentence { font-family: var(--en); font-size: 20px; line-height: 28px; color: var(--white); margin: 0; overflow-wrap: anywhere; }
+.sentence .lit { color: var(--gold); }
+.mark { font-family: var(--ja); font-size: 14px; color: var(--mint); margin-right: 8px; white-space: nowrap; }
+.mark svg { width: 14px; height: 14px; vertical-align: -2px; margin-right: 2px; }
+.slots { color: var(--blue); letter-spacing: 0.08em; white-space: nowrap; }
+.slots.nyan { color: var(--gold); }
+.right { color: var(--gold); }
+.wrong { color: var(--pink); text-decoration: line-through; text-decoration-thickness: 2px; margin-right: 6px; }
+.meaning { font-family: var(--en); font-size: 16px; line-height: 22px; color: var(--text); margin-top: 12px; }
+.meaning p { margin: 0; }
+#notice { flex: 0 0 auto; padding: 0 16px; font-size: 13px; color: var(--dim); }
+#notice:empty { display: none; }
+#next { flex: 0 0 auto; padding: 4px 16px; font-size: 14px; color: var(--dim); }
+#next:empty { display: none; }
+#choices { flex: 0 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 8px 16px 0; }
+#choices[hidden] { display: none; }
+#choices button { min-height: 48px; background: var(--choice); border: 1px solid var(--blue); border-radius: 6px; font-family: var(--en); font-size: 20px; color: var(--white); cursor: pointer; }
+#choices button:disabled { cursor: default; }
+#choices button.wrongpick { color: var(--pink); text-decoration: line-through; border-color: var(--pink); }
+#choices button.rightpick { color: var(--gold); border-color: var(--gold); }
+#choices .nochoice { grid-column: 1 / -1; margin: 0; font-size: 14px; color: var(--dim); }
+.row { flex: 0 0 52px; display: flex; align-items: center; gap: 8px; padding: 0 16px; }
+#answer { flex: 1 1 auto; min-width: 0; height: 40px; box-sizing: border-box; background: transparent; border: 0; border-bottom: 1px solid var(--dim); color: var(--white); font-family: var(--en); font-size: 20px; padding: 0 2px; caret-color: var(--white); border-radius: 0; outline: none; }
+#answer:focus { border-bottom-color: var(--blue); }
+#answer[hidden] { display: none; }
+.spacer { flex: 1 1 auto; }
+#answer:not([hidden]) + .spacer { display: none; }
+#go { flex: 0 0 auto; min-width: 72px; height: 44px; background: var(--blue); color: var(--ground); border: 0; border-radius: 6px; font-size: 16px; cursor: pointer; }
+#go[hidden] { display: none; }
+.hint { flex: 0 0 auto; display: flex; align-items: center; gap: 4px; min-height: 44px; min-width: 64px; font-family: var(--en); font-size: 16px; color: var(--text); cursor: pointer; }
+.hint input { width: 22px; height: 22px; margin: 0; accent-color: var(--blue); }
+.hint.off { color: var(--dim); }
+
+/* V-12 the end of the book */
+#end { justify-content: center; padding: 16px; gap: 16px; }
+#end h1 { font-family: var(--en); font-size: 24px; font-weight: normal; color: var(--white); margin: 0; }
+
+/* V-10 the sheet */
+#shade { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+#shade.open { opacity: 1; pointer-events: auto; }
+#sheet { position: fixed; left: 0; right: 0; bottom: 0; margin: 0 auto; max-width: 480px; max-height: 80%; overflow-y: auto; background: var(--sheet); padding: 8px 16px 24px; box-sizing: border-box; transform: translateY(100%); transition: transform 0.2s; border-radius: 12px 12px 0 0; }
+#sheet[hidden] { display: block; visibility: hidden; }
+#sheet.open { transform: none; visibility: visible; }
+#sheet button.item { display: block; width: 100%; min-height: 48px; text-align: left; background: none; border: 0; font-size: 16px; color: var(--text); cursor: pointer; }
+#sheet h3 { font-size: 13px; font-weight: normal; color: var(--dim); margin: 14px 0 2px; }
+#sheet .sub { font-size: 14px; color: var(--text); padding: 4px 0 8px; line-height: 1.7; }
+#sheet .sub a { color: var(--blue); }
+#sheet label { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: 16px; }
+#sheet input[type="radio"], #sheet input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--blue); }
