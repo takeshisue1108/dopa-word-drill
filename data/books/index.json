@@ -1,0 +1,9 @@
+[
+  {
+    "key": "oewn-2025",
+    "title": "Open English WordNet",
+    "author": "英英辞書の例文",
+    "kind": "dictionary",
+    "path": "data/dict/examples.json"
+  }
+]
